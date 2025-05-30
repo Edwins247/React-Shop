@@ -1,0 +1,62 @@
+@charset "utf-8";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.menu {
+  top: 112px;
+}
+
+.drawer-content {
+  max-height: initial !important;
+  min-height: -webkit-fill-available;
+}
+
+.drawer-toggle:checked + .drawer-content {
+  max-height: 100vh !important;
+}
+
+.js-searchedItem:active span {
+  color: white !important;
+}
+
+.main {
+  min-height: calc(100vh - 4rem - 224px);
+}
+
+.carousel * {
+  box-sizing: border-box;
+}
+
+.carousel {
+  overflow: hidden;
+  margin: auto;
+  width: 100%;
+}
+
+.carousel-container .carousel-slide {
+  display: flex;
+  justify-content: center;
+  height: 700px;
+}
+
+.carousel-container .carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card figure img {
+  max-width: 50%;
+  max-height: 50%;
+}
+
+.view_image {
+  min-width: 20em;
+}
