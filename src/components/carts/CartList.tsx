@@ -2,17 +2,22 @@ import { Link } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { cartState, cartList, addToCart, removeFromCart } from "../../store/cart";
 import { toCurrencyFormat } from "../../helpers/helpers";
+import { startTransition } from "react";
 
 const CartList = (): JSX.Element => {
   const [cart, setCart] = useRecoilState(cartState);
   const items = useRecoilValue(cartList);
 
   const addToCartHandler = (id: number) => {
-    setCart(addToCart(cart, { id }));
+    startTransition(() => {
+      setCart(addToCart(cart, { id }));
+    });
   };
 
   const removeFromCartHandler = (id: number) => {
-    setCart(removeFromCart(cart, id.toString()));
+    startTransition(() => {
+      setCart(removeFromCart(cart, id.toString()));
+    });
   };
 
   return (

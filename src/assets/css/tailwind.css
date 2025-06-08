@@ -30,6 +30,10 @@ body {
   min-height: calc(100vh - 4rem - 224px);
 }
 
+.carousel-root {
+  outline: none;
+}
+
 .carousel * {
   box-sizing: border-box;
 }
@@ -52,11 +56,49 @@ body {
   object-fit: cover;
 }
 
+@media screen and (max-width: 1024px) {
+  .carousel-container .carousel-slide {
+    height: 220px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .carousel-container .carousel-slide .carousel-description {
+    bottom: 0;
+  }
+}
+
 .card figure img {
   max-width: 50%;
   max-height: 50%;
 }
+@media (max-width: 480px) {
+  .item_list[data-scroll="true"] {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-auto-columns: minmax(220px, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .item_list[data-scroll="true"] {
+    grid-auto-flow: column;
+    overflow-x: auto;
+  }
+}
 
 .view_image {
   min-width: 20em;
+}
+
+/* Nav 영역 관련 */
+.navbar .btn-ghost {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .navbar .btn-ghost {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

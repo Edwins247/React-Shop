@@ -1,15 +1,13 @@
-import { selector } from "recoil";
+import { selector, selectorFamily } from "recoil";
 import CONSTANTS from "../constants/constants";
 
-// 혹시 API통신이 되지 않는다면 /product.json파일을 활용해서 로드하세요.
-// const productsURL = '/products.json';
-const productsURL = `${CONSTANTS.IS_DEV ? `/proxy` : `${import.meta.env.VITE_FAKE_STORE_API}`}/products`;
-console.log(productsURL);
+const productsURL = `${CONSTANTS.IS_DEV ? "/proxy" : import.meta.env.VITE_FAKE_STORE_API}/products`;
 
 interface IRating {
   readonly rate?: number;
   readonly count?: number;
 }
+
 export interface IProduct {
   readonly id: number;
   readonly title: string;
@@ -20,10 +18,6 @@ export interface IProduct {
   readonly rating: IRating;
 }
 
-/**
- * productList는 API 1회 요청 후에 유지됩니다.
- * 디테일 페이지에서는 productDetail/id로 각각 호출하셔도 무방합니다.
- */
 export const productsList = selector<IProduct[]>({
   key: "productsList",
   get: async () => {
@@ -35,4 +29,14 @@ export const productsList = selector<IProduct[]>({
       return [];
     }
   },
+});
+
+export const productById = selectorFamily<IProduct | null, number>({
+  key: "productById",
+  get:
+    (id: number) =>
+    async ({ get }) => {
+      const allProducts = get(productsList);
+      return allProducts.find((p) => p.id === id) ?? null;
+    },
 });

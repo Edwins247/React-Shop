@@ -4,6 +4,7 @@ import ItemList from "../components/common/ItemList";
 import ProductsLoad from "../components/products/ProductsLoad";
 import BreadCrumb from "../components/common/Breadcrumb";
 import { MENUS } from "../constants/category";
+import Error from "../components/common/Error";
 
 const Fashion = (): JSX.Element => {
   const productsLoadable = useRecoilValueLoadable(productsList);
@@ -14,6 +15,10 @@ const Fashion = (): JSX.Element => {
       (p) => p.category === "men's clothing" || p.category === "women's clothing"
     );
   };
+
+  if (productsLoadable.state === "hasError") {
+    return <Error />;
+  }
 
   return (
     <section className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">

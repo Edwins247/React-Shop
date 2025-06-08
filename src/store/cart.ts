@@ -1,6 +1,6 @@
-import { atom, selector } from "recoil";
+import { atom, selector, selectorFamily } from "recoil";
 import { CART_ITEM } from "../constants/category";
-import { productsList } from "./products";
+import { productById } from "./products";
 
 export interface ICartInfo {
   readonly id: number;
@@ -19,36 +19,26 @@ export interface ICartState {
   readonly items?: Record<string | number, ICartInfo>;
 }
 
-/**
- * 카트의 상태는 localStorage 기준으로 초기화 됩니다.
- * 카트의 상태는 새로고침해도 유지되어야 하기 때문입니다.
- */
 export const cartState = atom<ICartState>({
   key: "cart",
   default: {},
   effects: [
     ({ setSelf, onSet }) => {
-      localStorage.getItem(CART_ITEM) && setSelf(JSON.parse(localStorage.getItem(CART_ITEM) as string));
+      const stored = localStorage.getItem(CART_ITEM);
+      if (stored) setSelf(JSON.parse(stored));
       onSet((value) => localStorage.setItem(CART_ITEM, JSON.stringify(value)));
     },
   ],
 });
 
-/**
- * cartList를 구현 하세요.
- * id, image, count 등을 return합니다.
- */
-
 export const cartList = selector<ICartItems[]>({
   key: "cartList",
-  get: async ({ get }) => {
+  get: ({ get }) => {
     const cart = get(cartState);
-    const products = get(productsList);
-
     if (!cart || !cart.items) return [];
 
     return Object.entries(cart.items).map(([id, info]) => {
-      const product = products.find((p) => p.id === Number(id));
+      const product = get(productById(Number(id)));
       return {
         id,
         title: product?.title || "알 수 없음",
@@ -60,7 +50,6 @@ export const cartList = selector<ICartItems[]>({
   },
 });
 
-// addToCart는 구현 해보세요.
 export const addToCart = (cart: ICartState, product: { id: number }): ICartState => {
   const productId = product.id;
   const prevItems = cart.items || {};
@@ -78,7 +67,6 @@ export const addToCart = (cart: ICartState, product: { id: number }): ICartState
   };
 };
 
-// removeFromCart는 참고 하세요.
 export const removeFromCart = (cart: ICartState, id: string): ICartState => {
   const prevItems = { ...(cart.items || {}) };
 
@@ -95,7 +83,3 @@ export const removeFromCart = (cart: ICartState, id: string): ICartState => {
     items: prevItems,
   };
 };
-
-/**
- * 그 외에 화면을 참고하며 필요한 기능들을 구현 하세요.
- */

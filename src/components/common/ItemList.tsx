@@ -9,10 +9,10 @@ interface ItemListProps {
 
 const ItemList = ({ title, products }: ItemListProps): JSX.Element => {
   return (
-    <section className="mb-12">
+    <>
       <h2 className="mb-5 lg:mb-8 text-3xl lg:text-4xl text-center font-bold">{title}</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 item_list" data-scroll="true">
         {products.map((product) => (
           <Link
             to={`/product/${product.id}`}
@@ -29,7 +29,7 @@ const ItemList = ({ title, products }: ItemListProps): JSX.Element => {
           </Link>
         ))}
       </div>
-    </section>
+    </>
   );
 };
 

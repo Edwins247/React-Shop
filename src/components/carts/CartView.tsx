@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import BreadCrumb from "../common/Breadcrumb";
 import Confirm from "../common/Confirm";
-import CartList from "./CartList";
 import { useRecoilValue } from "recoil";
 import { cartList } from "../../store/cart";
 import { toCurrencyFormat } from "../../helpers/helpers";
 import { MENUS } from "../../constants/category";
+import { lazy, Suspense } from "react";
+import Spinner from "../common/Spinner";
+
+const CartList = lazy(() => import("./CartList"));
 
 const CartView = (): JSX.Element => {
   const items = useRecoilValue(cartList);
@@ -27,7 +30,13 @@ const CartView = (): JSX.Element => {
         )}
 
         <div className="lg:flex justify-between mb-20">
-          <div>{!isEmpty && <CartList />}</div>
+          <div>
+            {!isEmpty && (
+              <Suspense fallback={<Spinner />}>
+                <CartList />
+              </Suspense>
+            )}
+          </div>
 
           <div className="self-start shrink-0 flex items-center mt-10 mb-20">
             <span className="text-xl md:text-2xl">총 : {toCurrencyFormat(totalPrice)}</span>
